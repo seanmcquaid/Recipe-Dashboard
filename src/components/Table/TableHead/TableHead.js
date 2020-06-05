@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import HeaderCell from "./HeaderCell/HeaderCell";
-import TableRow from "./TableRow/TableRow";
+import TableRow from "../TableRow/TableRow";
 
 const TableHead = ({headerCellNames}) => (
     <StyledTableHead>
