@@ -1,27 +1,42 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import H1 from "../../components/H1/H1";
 import H2 from "../../components/H2/H2";
 import TextInput from "../../components/TextInput/TextInput";
+import Button from "../../components/Button/Button";
 
 const RecipeSearch = () => {
     const [searchText, setSearchText] = useState("");
+    
     const searchTextRef = useRef(null);
 
     const searchTextOnChangeHandler = event => {
         setSearchText(event.target.value);
     };
 
+    const searchFormSubmitHandler = useCallback(event => {
+        event.preventDefault();
+        searchTextRef.current.focus();
+        setSearchText("")
+    },[]);
+
     return(
         <>
             <Header>
                 <H1>Recipe Search Dashboard</H1>
                 <H2>Type in your desired ingredient down below!</H2>
-                <TextInput 
-                    value={searchText} 
-                    onChange={searchTextOnChangeHandler} 
-                    ref={searchTextRef}
-                />
+                <Form onSubmit={searchFormSubmitHandler}>
+                    <TextInput 
+                        value={searchText} 
+                        onChange={searchTextOnChangeHandler} 
+                        ref={searchTextRef}
+                        placeholder="Type in your ingredient here!"
+                    />
+                    <Button
+                        title="Search"
+                        type="submit"
+                    />
+                </Form>
             </Header>
             <MainContent>
                 
@@ -43,6 +58,9 @@ const MainContent = styled.main`
     align-items : center;
     width : 100%;
     height : 100%;
+`;
+
+const Form = styled.form`
 `;
 
 export default RecipeSearch;
