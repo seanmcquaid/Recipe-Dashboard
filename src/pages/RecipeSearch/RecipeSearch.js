@@ -2,23 +2,52 @@ import React, {useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import H1 from "../../components/H1/H1";
 import H2 from "../../components/H2/H2";
+import P from "../../components/P/P";
 import TextInput from "../../components/TextInput/TextInput";
 import Button from "../../components/Button/Button";
+import Table from "../../components/Table/Table";
+import axios from "axios";
+import {apiKey, baseUrl} from "../../config";
 
 const RecipeSearch = () => {
     const [searchText, setSearchText] = useState("");
-    
+    const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [searchResults, setSearchResults] = useState([]);
+    const amountOfResultsToReturn = [1, 5, 10, 20, 50, 100];
+    const [currentPage, setCurrentPage] = useState(1);
+    const amountOfResultsPerPageOptions = [1, 5, 10, 20, 50, "All"];
+
     const searchTextRef = useRef(null);
 
     const searchTextOnChangeHandler = event => {
         setSearchText(event.target.value);
     };
 
-    const searchFormSubmitHandler = useCallback(event => {
+    const searchFormSubmitHandler = useCallback(async event => {
         event.preventDefault();
+
+        setErrorMessage(null);
+
+        setSearchText("");
         searchTextRef.current.focus();
-        setSearchText("")
-    },[]);
+
+        setIsLoadingSearchResults(true);
+
+        await axios.get(`${baseUrl}/recipes/search?query=${searchText}&apiKey=${apiKey}`)
+            .then(({data}) => {
+                if(data.results.length > 0){
+                    setSearchResults(data.results);
+                }else{
+                    setErrorMessage("There were no recipes for that ingredient, please try again!");
+                }
+            })
+            .catch(err => {
+                setErrorMessage("There was an issue finding recipes for your ingredient, please try again!");
+            });
+        
+        setIsLoadingSearchResults(false);    
+    },[searchText]);
 
     return(
         <>
@@ -39,7 +68,12 @@ const RecipeSearch = () => {
                 </Form>
             </Header>
             <MainContent>
-                
+                {isLoadingSearchResults ? 
+                    <div>Loading</div> : 
+                    errorMessage ? 
+                        <P>{errorMessage}</P> : 
+                        <Table data={searchResults}/>
+                }
             </MainContent>
         </>
     )

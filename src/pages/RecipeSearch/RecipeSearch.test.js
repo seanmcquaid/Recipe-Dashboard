@@ -64,4 +64,12 @@ describe("<RecipeSearch/>" , () => {
 
         expect(getByTestId("recipeSearchHeader")).not.toBeInTheDocument();
     });
+
+    test("User can select how many results to return", () => {
+
+    });
+
+    test("User can select how many results to display per page", () => {
+
+    });
 });
