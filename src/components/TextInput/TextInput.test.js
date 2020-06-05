@@ -9,9 +9,9 @@ describe("<TextInput/>", () => {
             onChange : jest.fn(),
         };
 
-        const {getByDisplayValue} = render(<TextInput {...props}/>)
+        const {getByTestId} = render(<TextInput data-testid="testTextInput" {...props} />)
 
-        expect(getByDisplayValue("Text Input Here")).toBeInTheDocument();
+        expect(getByTestId("testTextInput")).toBeInTheDocument();
     });
 
     test("Text Input on change works as expected", () => {
