@@ -4,7 +4,7 @@ import HeaderCell from "./HeaderCell/HeaderCell";
 import TableHeadRow from "./TableHeadRow/TableHeadRow";
 
 const TableHead = ({headerCellNames}) => (
-    <StyledTableHead>
+    <StyledTableHead data-testid="recipeTableHead">
         <TableHeadRow>
             {headerCellNames.map((name, index) => <HeaderCell key={index}>{name}</HeaderCell>)}
         </TableHeadRow>

@@ -17,9 +17,9 @@ describe("<TableBodyRow/>", () => {
         const {getByTestId} = render(
             <Router>
                 <table>
-                    <thead>
+                    <tbody>
                         <TableBodyRow {...props}/>
-                    </thead>
+                    </tbody>
                 </table>
             </Router>);
 

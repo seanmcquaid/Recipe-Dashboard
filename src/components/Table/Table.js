@@ -7,7 +7,7 @@ const Table = ({data}) => {
     const headerCellNames = useMemo(() => ["Recipe Name", "Link For More Info"], []);
 
     return (
-        <StyledTable>
+        <StyledTable data-testid="recipeTable">
             <TableHead headerCellNames={headerCellNames}/>
             <TableBody data={data}/>
         </StyledTable>
