@@ -5,12 +5,12 @@ import RecipeInfo from "./pages/RecipeInfo/RecipeInfo";
 import Layout from "./components/Layout/Layout";
 
 const App = () => (
-  <Layout>
     <HashRouter>
-      <Route exact path="/" component={RecipeSearch}/>
-      <Route exact path="/recipeInfo/:recipeId" component={RecipeInfo}/>
+      <Layout>
+        <Route exact path="/" component={RecipeSearch}/>
+        <Route exact path="/recipeInfo/:recipeId" component={RecipeInfo}/>
+      </Layout>
     </HashRouter>
-  </Layout>
 );
 
 export default App;
