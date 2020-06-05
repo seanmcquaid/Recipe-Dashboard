@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const Button = ({onClick, type, title}) => <StyledButton onClick={onClick} type={type}>{title}</StyledButton>;
+const Button = ({onClick, type, title}) => <StyledButton onClick={onClick} type={type} data-testid={`${title}Button`}>{title}</StyledButton>;
 
 const StyledButton = styled.button`
     padding : 1rem;
@@ -11,7 +11,7 @@ const StyledButton = styled.button`
     border-radius : 6px;
     width : 100px;
     outline : none;
-    font-family: "Inconsolata", monospace;
+    font-family: "Montserrat", sans-serif;
     font-size : 1rem;
 `;
 

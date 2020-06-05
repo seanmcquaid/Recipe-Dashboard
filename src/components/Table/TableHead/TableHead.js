@@ -1,17 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import HeaderCell from "./HeaderCell/HeaderCell";
-import TableRow from "../TableRow/TableRow";
+import TableHeadRow from "./TableHeadRow/TableHeadRow";
 
 const TableHead = ({headerCellNames}) => (
     <StyledTableHead>
-        <TableRow>
-            {headerCellNames.map((name, index) => <HeaderCell key={index}>{name}</HeaderCell>)}
-        </TableRow>
+        <TableHeadRow>
+            {headerCellNames.map((name, index) => <HeaderCell colSpan="1" key={index}>{name}</HeaderCell>)}
+        </TableHeadRow>
     </StyledTableHead>
 );
 
 const StyledTableHead = styled.thead`
+    font-family: "Inconsolata", monospace;
+    font-size : 1rem;
+    width : 100%;
 `;
 
 export default TableHead;

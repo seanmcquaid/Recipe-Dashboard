@@ -15,8 +15,6 @@ const RecipeSearch = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [searchResults, setSearchResults] = useState([]);
     const amountOfResultsToReturn = [1, 5, 10, 20, 50, 100];
-    const [currentPage, setCurrentPage] = useState(1);
-    const amountOfResultsPerPageOptions = [1, 5, 10, 20, 50, "All"];
 
     const searchTextRef = useRef(null);
 
@@ -52,10 +50,11 @@ const RecipeSearch = () => {
     return(
         <>
             <Header>
-                <H1>Recipe Search Dashboard</H1>
-                <H2>Type in your desired ingredient down below!</H2>
-                <Form onSubmit={searchFormSubmitHandler}>
-                    <TextInput 
+                <H1 data-testid="recipeSearchPageHeader">Recipe Search Dashboard</H1>
+                <H2 data-testid="recipeSearchPageSubHeader">Type in your desired ingredient down below!</H2>
+                <Form data-testid="recipeSearchForm" onSubmit={searchFormSubmitHandler}>
+                    <TextInput
+                        data-testid="searchTextInput"
                         value={searchText} 
                         onChange={searchTextOnChangeHandler} 
                         ref={searchTextRef}
@@ -69,9 +68,9 @@ const RecipeSearch = () => {
             </Header>
             <MainContent>
                 {isLoadingSearchResults ? 
-                    <div>Loading</div> : 
+                    <div data-testid="loadingSpinner">Loading</div> : 
                     errorMessage ? 
-                        <P>{errorMessage}</P> : 
+                        <P data-testid="errorMessage">{errorMessage}</P> : 
                         <Table data={searchResults}/>
                 }
             </MainContent>
@@ -81,8 +80,7 @@ const RecipeSearch = () => {
 
 const Header = styled.header`
     text-align : center;
-    margin : 1rem;
-    padding : 1rem;
+    width : 100%;
 `;
 
 const MainContent = styled.main`
@@ -94,6 +92,11 @@ const MainContent = styled.main`
 `;
 
 const Form = styled.form`
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    width : 100%;
 `;
 
 export default RecipeSearch;
