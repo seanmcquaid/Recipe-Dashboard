@@ -6,7 +6,7 @@ import TableHeadRow from "./TableHeadRow/TableHeadRow";
 const TableHead = ({headerCellNames}) => (
     <StyledTableHead>
         <TableHeadRow>
-            {headerCellNames.map((name, index) => <HeaderCell colSpan="1" key={index}>{name}</HeaderCell>)}
+            {headerCellNames.map((name, index) => <HeaderCell key={index}>{name}</HeaderCell>)}
         </TableHeadRow>
     </StyledTableHead>
 );

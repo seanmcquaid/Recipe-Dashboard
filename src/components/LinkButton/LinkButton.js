@@ -10,6 +10,8 @@ const LinkButton = styled(Link)`
     outline : none;
     font-family: "Montserrat", sans-serif;
     font-size : 1rem;
+    text-decoration : none;
+    color : black;
 `;
 
 export default LinkButton;

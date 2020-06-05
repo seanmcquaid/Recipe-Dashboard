@@ -9,6 +9,9 @@ const TableBody = ({data}) => (
 );
 
 const StyledTableBody = styled.tbody`
+    margin : 1rem;
+    width : 100%;
+    height : 100%;
 `;
 
 export default TableBody;

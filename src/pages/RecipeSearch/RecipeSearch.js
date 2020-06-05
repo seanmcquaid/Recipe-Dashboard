@@ -84,18 +84,16 @@ const Header = styled.header`
 `;
 
 const MainContent = styled.main`
+    height : 100%;
+    width : 100%;
     display : flex;
     flex-direction : column;
-    justify-content : center;
     align-items : center;
-    width : 100%;
+    overflow-x: auto;
+    overflow-y : auto;
 `;
 
 const Form = styled.form`
-    display : flex;
-    flex-direction : column;
-    justify-content : center;
-    align-items : center;
     width : 100%;
 `;
 

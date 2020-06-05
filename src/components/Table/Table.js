@@ -15,15 +15,11 @@ const Table = ({data}) => {
 }
 
 const StyledTable = styled.table`
-    table-layout: auto;
     height : 100%;
     border : 2px solid black;
     width : 100%;
-    max-width : 800px;
-    display : flex;
-    flex-direction : column;
-    align-items : center;
-    margin : 2rem;
+    max-width : 80%;
+    margin : 1rem 0;
 `;
 
 export default Table;
