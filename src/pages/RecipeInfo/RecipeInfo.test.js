@@ -7,7 +7,7 @@ import "@testing-library/jest-dom/extend-expect";
 const renderComponent = ({ recipeId }) =>
   render(
     <MemoryRouter initialEntries={[`/recipeInfo/${recipeId}`]}>
-        <Route path="/recipeInfo/:recipeId">
+        <Route exact path="/recipeInfo/:recipeId">
             <RecipeInfo/>
         </Route>
     </MemoryRouter>

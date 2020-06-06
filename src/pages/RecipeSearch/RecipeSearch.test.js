@@ -1,9 +1,18 @@
 import React from "react";
 import RecipeSearch from "./RecipeSearch";
-import {Router} from "react-router-dom";
+import RecipeInfo from "../RecipeInfo/RecipeInfo";
+import {MemoryRouter, Router, Route} from "react-router-dom";
 import {render, fireEvent, cleanup, waitForElementToBeRemoved} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { createMemoryHistory } from "history";
+
+const renderRoutes = () =>
+  render(
+    <MemoryRouter>
+        <Route path="/recipeInfo/:recipeId" component={RecipeInfo}/>
+        <Route exact path="/" component={RecipeSearch}/>
+    </MemoryRouter>
+  );
 
 describe("<RecipeSearch/>" , () => {
     afterEach(cleanup);
@@ -44,13 +53,8 @@ describe("<RecipeSearch/>" , () => {
     });
 
     test("User is taken to another page after clicking button on table row", async () => {
-        const history = createMemoryHistory();
 
-        const {getByTestId, container} = render(
-            <Router history={history}>
-                <RecipeSearch/>
-            </Router>
-        );
+        const {getByTestId, container} = renderRoutes();
 
         fireEvent.change(getByTestId("searchTextInput"), { target: {value : "Cheese"}});
 
@@ -60,7 +64,9 @@ describe("<RecipeSearch/>" , () => {
 
         fireEvent.click(getByTestId("Three-Cheese Pizza (For Cheese Lovers)LinkButton"));
 
-        expect(container.innerHTML).toContainElement(getByTestId("SearchButton"));
+        await waitForElementToBeRemoved(() => getByTestId("loadingSpinner"));
+
+        expect(container).toContainElement(getByTestId("recipeInfoPageHeader"));
     });
 
     test("User can select how many results to return", async () => {
