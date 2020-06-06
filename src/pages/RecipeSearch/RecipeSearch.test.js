@@ -72,7 +72,7 @@ describe("<RecipeSearch/>" , () => {
     test("User can select how many results to return", async () => {
         const history = createMemoryHistory();
 
-        const {getByTestId, rerender} = render(
+        const {getByTestId, findAllByText} = render(
             <Router history={history}>
                 <RecipeSearch/>
             </Router>
@@ -86,9 +86,9 @@ describe("<RecipeSearch/>" , () => {
 
         await waitForElementToBeRemoved(() => getByTestId("loadingSpinner"));
 
-        await rerender();
+        const recipeButtonsFound = await findAllByText("Recipe Info");
 
-        // check if you only get back 5 elements
+        expect(recipeButtonsFound).toHaveLength(5);
 
     });
 
