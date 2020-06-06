@@ -11,6 +11,7 @@ const LinkButton = styled(Link)`
     font-family: "Montserrat", sans-serif;
     font-size : 1rem;
     text-decoration : none;
+    text-align : center;
     color : black;
 `;
 

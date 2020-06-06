@@ -55,7 +55,7 @@ describe("<RecipeSearch/>" , () => {
 
         await rerender();
 
-        expect(getByTestId("recipeSearchPageHeader")).not.toBeInTheDocument();
+        expect(getByTestId("recipeInfoPageHeader")).toBeInTheDocument();
     });
 
     test("User can select how many results to return", async () => {

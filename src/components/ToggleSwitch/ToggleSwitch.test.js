@@ -1,30 +1,32 @@
 import React from "react";
-import TextInput from "./TextInput";
 import { render, fireEvent, cleanup } from "@testing-library/react";
+import ToggleSwitch from "./ToggleSwitch";
 import "@testing-library/jest-dom/extend-expect";
 
 describe("<TextInput/>", () => {
     afterEach(cleanup);
     test("Text Input Renders Correctly", () => {
         const props = {
-            value : "Text Input Here",
+            title : "Test",
+            value : false,
             onChange : jest.fn(),
         };
 
-        const {getByTestId} = render(<TextInput data-testid="testTextInput" {...props} />)
+        const {getByTestId} = render(<ToggleSwitch {...props} />);
 
-        expect(getByTestId("testTextInput")).toBeInTheDocument();
+        expect(getByTestId("TestToggleSwitch")).toBeInTheDocument();
     });
 
     test("Text Input on change works as expected", () => {
         const props = {
-            value : "Text Input Here",
+            title : "Test",
+            value : false,
             onChange : jest.fn(),
         };
 
-        const {getByTestId} = render(<TextInput data-testid="testTextInput" {...props}/>);
+        const {getByTestId} = render(<ToggleSwitch {...props} />);
 
-        fireEvent.change(getByTestId("testTextInput"), {target : {value : "Cheese"}});
+        fireEvent.click(getByTestId("TestToggleSwitch"), {target : {value : true}});
 
         expect(props.onChange).toHaveBeenCalled();
     });
