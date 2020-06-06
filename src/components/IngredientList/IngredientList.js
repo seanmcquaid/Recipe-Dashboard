@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const IngredientList = ({ingredients, isMetric}) => (
+const IngredientList = React.memo(({ingredients, isMetric}) => (
     <StyledList data-testid="ingredientsList">
         {ingredients.map((ingredient)=> (
             <StyledListItem key={ingredient.id}>
@@ -10,7 +10,7 @@ const IngredientList = ({ingredients, isMetric}) => (
             </StyledListItem>)
         )}
     </StyledList>
-);
+));
 
 const StyledList = styled.ul`
     list-style : none;

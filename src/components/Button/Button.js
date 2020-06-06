@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const Button = ({onClick, type, title}) => <StyledButton onClick={onClick} type={type} data-testid={`${title}Button`}>{title}</StyledButton>;
+const Button = React.memo(({onClick, type, title}) => (
+    <StyledButton onClick={onClick} type={type} data-testid={`${title}Button`}>
+        {title}
+    </StyledButton>
+));
 
 const StyledButton = styled.button`
     padding : 1rem;

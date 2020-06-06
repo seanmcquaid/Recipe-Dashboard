@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TableHead from "./TableHead/TableHead";
 import TableBody from "./TableBody/TableBody";
 
-const Table = ({data}) => {
+const Table = React.memo(({data}) => {
     const headerCellNames = useMemo(() => ["Recipe Name", "Link For More Info"], []);
 
     return (
@@ -12,7 +12,7 @@ const Table = ({data}) => {
             <TableBody data={data}/>
         </StyledTable>
     );
-}
+});
 
 const StyledTable = styled.table`
     height : 100%;

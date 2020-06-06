@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const LinkButton = styled(Link)`
+const LinkButton = React.memo(styled(Link)`
     padding : 1rem;
     margin : 1rem;
     border : 2px solid black;
@@ -13,6 +14,6 @@ const LinkButton = styled(Link)`
     text-decoration : none;
     text-align : center;
     color : black;
-`;
+`);
 
 export default LinkButton;

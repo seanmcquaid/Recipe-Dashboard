@@ -20,13 +20,13 @@ const RecipeSearch = () => {
 
     const searchTextRef = useRef(null);
 
-    const searchTextOnChangeHandler = event => {
+    const searchTextOnChangeHandler = useCallback(event => {
         setSearchText(event.target.value);
-    };
+    },[]);
 
-    const dropdownOnChangeHandler = event => {
+    const dropdownOnChangeHandler = useCallback(event => {
         setAmountOfResultsToReturn(parseInt(event.target.value));
-    };
+    }, []);
 
     const searchFormSubmitHandler = useCallback(async event => {
         event.preventDefault();

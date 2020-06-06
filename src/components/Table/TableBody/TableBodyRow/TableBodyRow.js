@@ -3,14 +3,14 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import LinkButton from "../../../LinkButton/LinkButton";
 
-const TableRow = ({rowInfo}) => (
+const TableRow = React.memo(({rowInfo}) => (
     <StyledTableRow data-testid={`${rowInfo.title}TableRow`}>
         <StyledTableColumn data-testid={`${rowInfo.title}Title`}>{rowInfo.title}</StyledTableColumn>
         <StyledTableColumn>
             <LinkButton to={`/recipeInfo/${rowInfo.id}`} data-testid={`${rowInfo.title}LinkButton`}>Recipe Info</LinkButton>
         </StyledTableColumn>
     </StyledTableRow>
-);
+));
 
 const StyledTableRow = styled.tr`
     font-family: "Montserrat", sans-serif;

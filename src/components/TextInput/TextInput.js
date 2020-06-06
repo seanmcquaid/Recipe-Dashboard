@@ -1,6 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 
-const TextInput = styled.input`
+const TextInput = React.memo(styled.input`
     padding : 0.5rem;
     margin : 0.5rem;
     width : 100%;
@@ -10,6 +11,6 @@ const TextInput = styled.input`
     outline : none;
     font-family: "Montserrat", sans-serif;
     font-size : 1rem;
-`;
+`);
 
 export default TextInput;

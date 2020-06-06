@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const ToggleSwitch = ({title, value, onChange}) => (
+const ToggleSwitch = React.memo(({title, value, onChange}) => (
     <StyledContainer>
         <StyledLabel>{title}</StyledLabel>
         <StyledToggleSwitch
@@ -12,7 +12,7 @@ const ToggleSwitch = ({title, value, onChange}) => (
             type="checkbox"
         />
     </StyledContainer>
-);
+));
 
 const StyledContainer = styled.div`
     display : flex;
