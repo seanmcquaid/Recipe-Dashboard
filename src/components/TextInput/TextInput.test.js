@@ -1,8 +1,9 @@
 import React from "react";
 import TextInput from "./TextInput";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, cleanup } from "@testing-library/react";
 
 describe("<TextInput/>", () => {
+    afterEach(cleanup);
     test("Text Input Renders Correctly", () => {
         const props = {
             value : "Text Input Here",

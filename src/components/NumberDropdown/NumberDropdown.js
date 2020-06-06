@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Dropdown = ({title, value, dropdownOptions, onChange}) => (
+const NumberDropdown = ({title, value, dropdownOptions, onChange}) => (
     <StyledContainer>
         <StyledLabel>{title}</StyledLabel>
         <StyledDropdown value={value} onChange={onChange} data-testid={`${title}Dropdown`}>
@@ -12,22 +12,28 @@ const Dropdown = ({title, value, dropdownOptions, onChange}) => (
 );
 
 const StyledContainer = styled.div`
+    margin : 0.5rem;
+    font-family: "Montserrat", sans-serif;
+    font-size : 1rem;
+    width : 100%;
 `;
 
 const StyledLabel = styled.label`
+    margin : 0.5rem;
 `;
 
 const StyledDropdown = styled.select`
+    outline : none;
 `;
 
 const StyledDropdownOption = styled.option`
 `;
 
-Dropdown.propTypes = {
+NumberDropdown.propTypes = {
     title : PropTypes.string.isRequired,
-    value : PropTypes.string.isRequired,
-    dropdownOptions : PropTypes.array.isRequired,
+    value : PropTypes.number.isRequired,
+    dropdownOptions : PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     onChange : PropTypes.func.isRequired,
 };
 
-export default Dropdown;
+export default NumberDropdown;

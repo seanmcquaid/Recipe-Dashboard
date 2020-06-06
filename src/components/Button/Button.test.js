@@ -1,9 +1,10 @@
 import React from "react";
 import Button from "./Button";
-import {render, fireEvent} from "@testing-library/react";
+import {render, fireEvent, cleanup} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 describe("<Button/>", () => {
+    afterEach(cleanup);
     test("Button on click works correctly", () => {
         const props = {
             title : "Test Button",

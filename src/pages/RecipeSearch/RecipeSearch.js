@@ -8,18 +8,24 @@ import Button from "../../components/Button/Button";
 import Table from "../../components/Table/Table";
 import axios from "axios";
 import {apiKey, baseUrl} from "../../config";
+import Dropdown from "../../components/NumberDropdown/NumberDropdown";
 
 const RecipeSearch = () => {
     const [searchText, setSearchText] = useState("");
     const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [searchResults, setSearchResults] = useState([]);
-    const amountOfResultsToReturn = [1, 5, 10, 20, 50, 100];
+    const resultsToReturnOptions = [1, 5, 10, 20, 50, 100];
+    const [amountOfResultsToReturn, setAmountOfResultsToReturn] = useState(10);
 
     const searchTextRef = useRef(null);
 
     const searchTextOnChangeHandler = event => {
         setSearchText(event.target.value);
+    };
+
+    const dropdownOnChangeHandler = event => {
+        setAmountOfResultsToReturn(parseInt(event.target.value));
     };
 
     const searchFormSubmitHandler = useCallback(async event => {
@@ -30,9 +36,11 @@ const RecipeSearch = () => {
         setSearchText("");
         searchTextRef.current.focus();
 
+        setAmountOfResultsToReturn(10);
+
         setIsLoadingSearchResults(true);
 
-        await axios.get(`${baseUrl}/recipes/search?query=${searchText}&apiKey=${apiKey}`)
+        await axios.get(`${baseUrl}/recipes/search?query=${searchText}&apiKey=${apiKey}&number=${amountOfResultsToReturn}`)
             .then(({data}) => {
                 if(data.results.length > 0){
                     setSearchResults(data.results);
@@ -40,12 +48,10 @@ const RecipeSearch = () => {
                     setErrorMessage("There were no recipes for that ingredient, please try again!");
                 }
             })
-            .catch(err => {
-                setErrorMessage("There was an issue finding recipes for your ingredient, please try again!");
-            });
+            .catch(err => console.log(err));
         
         setIsLoadingSearchResults(false);    
-    },[searchText]);
+    },[searchText, amountOfResultsToReturn]);
 
     return(
         <>
@@ -59,6 +65,12 @@ const RecipeSearch = () => {
                         onChange={searchTextOnChangeHandler} 
                         ref={searchTextRef}
                         placeholder="Type in your ingredient here!"
+                    />
+                    <Dropdown
+                        title="Amount Of Recipes"
+                        value={amountOfResultsToReturn}
+                        dropdownOptions={resultsToReturnOptions}
+                        onChange={dropdownOnChangeHandler}
                     />
                     <Button
                         title="Search"

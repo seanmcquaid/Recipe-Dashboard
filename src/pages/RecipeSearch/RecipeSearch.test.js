@@ -39,7 +39,7 @@ describe("<RecipeSearch/>" , () => {
     });
 
     test("User is taken to another page after clicking button on table row", async () => {
-        const {getByTestId} = render(
+        const {getByTestId, rerender} = render(
             <Router>
                 <RecipeSearch/>
             </Router>
@@ -53,10 +53,29 @@ describe("<RecipeSearch/>" , () => {
 
         fireEvent.click(getByTestId("Three-Cheese Pizza (For Cheese Lovers)LinkButton"));
 
+        await rerender();
+
         expect(getByTestId("recipeSearchPageHeader")).not.toBeInTheDocument();
     });
 
-    test("User can select how many results to return", () => {
+    test("User can select how many results to return", async () => {
+        const {getByTestId, rerender} = render(
+            <Router>
+                <RecipeSearch/>
+            </Router>
+        );
+
+        fireEvent.change(getByTestId("Amount Of RecipesDropdown"), {target : {value : 5}});
+
+        fireEvent.change(getByTestId("searchTextInput"), { target: {value : "Cheese"}});
+
+        fireEvent.click(getByTestId("SearchButton"));
+
+        await waitForElementToBeRemoved(() => getByTestId("loadingSpinner"));
+
+        await rerender();
+
+        // check if you only get back 5 elements
 
     });
 
