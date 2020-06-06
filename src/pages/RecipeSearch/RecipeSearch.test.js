@@ -1,14 +1,17 @@
 import React from "react";
 import RecipeSearch from "./RecipeSearch";
-import {HashRouter as Router} from "react-router-dom";
+import {Router} from "react-router-dom";
 import {render, fireEvent, cleanup, waitForElementToBeRemoved} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import { createMemoryHistory } from "history";
 
 describe("<RecipeSearch/>" , () => {
     afterEach(cleanup);
     test("User is able to search for a recipe", async () => {
+        const history = createMemoryHistory();
+
         const {getByTestId, getByText} = render(
-            <Router>
+            <Router history={history}>
                 <RecipeSearch/>
             </Router>
         );
@@ -23,8 +26,10 @@ describe("<RecipeSearch/>" , () => {
     });
 
     test("No results show for invalid ingredient search", async () => {
+        const history = createMemoryHistory();
+
         const {getByTestId} = render(
-            <Router>
+            <Router history={history}>
                 <RecipeSearch/>
             </Router>
         );
@@ -39,8 +44,10 @@ describe("<RecipeSearch/>" , () => {
     });
 
     test("User is taken to another page after clicking button on table row", async () => {
-        const {getByTestId, rerender} = render(
-            <Router>
+        const history = createMemoryHistory();
+
+        const {getByTestId, container} = render(
+            <Router history={history}>
                 <RecipeSearch/>
             </Router>
         );
@@ -53,14 +60,14 @@ describe("<RecipeSearch/>" , () => {
 
         fireEvent.click(getByTestId("Three-Cheese Pizza (For Cheese Lovers)LinkButton"));
 
-        await rerender();
-
-        expect(getByTestId("recipeInfoPageHeader")).toBeInTheDocument();
+        expect(container.innerHTML).toContainElement(getByTestId("SearchButton"));
     });
 
     test("User can select how many results to return", async () => {
+        const history = createMemoryHistory();
+
         const {getByTestId, rerender} = render(
-            <Router>
+            <Router history={history}>
                 <RecipeSearch/>
             </Router>
         );

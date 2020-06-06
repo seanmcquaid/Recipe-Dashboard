@@ -1,24 +1,21 @@
 import React from "react";
 import RecipeInfo from "./RecipeInfo";
-import {Router} from "react-router-dom";
+import {MemoryRouter, Route} from "react-router-dom";
 import {render, fireEvent, waitForElementToBeRemoved} from "@testing-library/react";
-import { createMemoryHistory } from "history"
 import "@testing-library/jest-dom/extend-expect";
+
+const renderComponent = ({ recipeId }) =>
+  render(
+    <MemoryRouter initialEntries={[`/recipeInfo/${recipeId}`]}>
+        <Route path="/recipeInfo/:recipeId">
+            <RecipeInfo/>
+        </Route>
+    </MemoryRouter>
+  );
 
 describe("<RecipeInfo/>" , () => {
     test("User is able toggle between US and metric measurements", async () => {
-        const history = createMemoryHistory();
-
-        history.push("/recipeInfo/215435");
-
-        const {getByTestId, getByText} = render(
-            <Router history={history}>
-                <RecipeInfo/>
-            </Router>,
-            {
-                route : "/recipeInfo/215435"
-            }
-        );
+        const {getByTestId, getByText} = renderComponent({recipeId : 215435});
 
         await waitForElementToBeRemoved(() => getByTestId("loadingSpinner"));
 
