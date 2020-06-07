@@ -1,5 +1,7 @@
 import React, {useState, useRef, useCallback} from "react";
 import styled from "styled-components";
+import axios from "axios";
+import {apiKey, baseUrl} from "../../config";
 import H1 from "../../components/H1/H1";
 import H2 from "../../components/H2/H2";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
@@ -7,8 +9,6 @@ import P from "../../components/P/P";
 import TextInput from "../../components/TextInput/TextInput";
 import Button from "../../components/Button/Button";
 import Table from "../../components/Table/Table";
-import axios from "axios";
-import {apiKey, baseUrl} from "../../config";
 import Dropdown from "../../components/NumberDropdown/NumberDropdown";
 
 const RecipeSearch = () => {
@@ -30,7 +30,7 @@ const RecipeSearch = () => {
 
     const dropdownOnChangeHandler = useCallback(event => {
         setAmountOfResultsToReturn(parseInt(event.target.value));
-    }, []);
+    },[]);
 
     const searchFormSubmitHandler = useCallback(async event => {
         event.preventDefault();

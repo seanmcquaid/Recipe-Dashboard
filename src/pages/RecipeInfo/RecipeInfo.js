@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { baseUrl, apiKey } from "../../config";
 import H1 from "../../components/H1/H1";
 import H2 from "../../components/H2/H2";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import axios from "axios";
-import { baseUrl, apiKey } from "../../config";
 import LinkButton from "../../components/LinkButton/LinkButton";
 import P from "../../components/P/P";
 import IngredientList from "../../components/IngredientList/IngredientList";
@@ -52,7 +52,15 @@ const RecipeInfo = () => {
 
                     return () => clearTimeout(timer);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    const timer = setTimeout(() => setRequestedRecipeInfo({
+                        ...requestedRecipeInfo,
+                        isLoading : false,
+                        errorMessage : "There was a problem getting the Recipe Info for this, please try again!"
+                    }), 1500);
+
+                    return () => clearTimeout(timer);
+                });
         }
     }, [recipeId, isLoading, requestedRecipeInfo]);
 
