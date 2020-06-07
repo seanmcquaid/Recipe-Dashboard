@@ -2,6 +2,7 @@ import React, {useState, useRef, useCallback} from "react";
 import styled from "styled-components";
 import H1 from "../../components/H1/H1";
 import H2 from "../../components/H2/H2";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import P from "../../components/P/P";
 import TextInput from "../../components/TextInput/TextInput";
 import Button from "../../components/Button/Button";
@@ -12,9 +13,12 @@ import Dropdown from "../../components/NumberDropdown/NumberDropdown";
 
 const RecipeSearch = () => {
     const [searchText, setSearchText] = useState("");
-    const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [searchResults, setSearchResults] = useState([]);
+    const [searchResultsInfo, setSearchResultsInfo] = useState({
+        isLoading : false, 
+        searchResults : [],
+        errorMessage : null
+    });
+    const {isLoading, searchResults, errorMessage} = searchResultsInfo;
     const resultsToReturnOptions = [1, 5, 10, 20, 50, 100];
     const [amountOfResultsToReturn, setAmountOfResultsToReturn] = useState(10);
 
@@ -31,27 +35,57 @@ const RecipeSearch = () => {
     const searchFormSubmitHandler = useCallback(async event => {
         event.preventDefault();
 
-        setErrorMessage(null);
-
         setSearchText("");
         searchTextRef.current.focus();
 
-        setAmountOfResultsToReturn(10);
+        if(amountOfResultsToReturn !== 10){
+            setAmountOfResultsToReturn(10);
+        }
 
-        setIsLoadingSearchResults(true);
+        if(errorMessage){
+            setSearchResultsInfo({
+                ...searchResultsInfo,
+                isLoading : true,
+                errorMessage : null
+            });
+        }else {
+            setSearchResultsInfo({
+                ...searchResultsInfo,
+                isLoading : true,
+            }); 
+        }
 
         await axios.get(`${baseUrl}/recipes/search?query=${searchText}&apiKey=${apiKey}&number=${amountOfResultsToReturn}`)
             .then(({data}) => {
                 if(data.results.length > 0){
-                    setSearchResults(data.results);
+                    const timer = setTimeout(() => setSearchResultsInfo({
+                        ...searchResultsInfo,
+                        isLoading : false,
+                        searchResults : data.results,
+                    }), 1500);
+
+                    return () => clearTimeout(timer);
                 }else{
-                    setErrorMessage("There were no recipes for that ingredient, please try again!");
+                    const timer = setTimeout(() => setSearchResultsInfo({
+                        ...searchResultsInfo,
+                        isLoading : false,
+                        errorMessage : "There were no recipes for that ingredient, please try again!",
+                    }), 1500);
+
+                    return () => clearTimeout(timer);
                 }
             })
-            .catch(err => console.log(err));
-        
-        setIsLoadingSearchResults(false);    
-    },[searchText, amountOfResultsToReturn]);
+            .catch(err => {
+                const timer = setTimeout(() => setSearchResultsInfo({
+                    ...searchResultsInfo,
+                    isLoading : false,
+                    errorMessage : "There was a problem finding a recipe! Try again later!"
+                }), 1500);
+
+                return () => clearTimeout(timer);
+            });
+
+    },[searchText, amountOfResultsToReturn, searchResultsInfo, errorMessage]);
 
     return(
         <>
@@ -79,8 +113,8 @@ const RecipeSearch = () => {
                 </Form>
             </Header>
             <MainContent>
-                {isLoadingSearchResults ? 
-                    <div data-testid="loadingSpinner">Loading</div> : 
+                {isLoading ? 
+                    <LoadingSpinner isLoading={isLoading}/>: 
                     errorMessage ? 
                         <P data-testid="errorMessage">{errorMessage}</P> : 
                         <Table data={searchResults}/>

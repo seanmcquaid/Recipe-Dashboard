@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import H1 from "../../components/H1/H1";
 import H2 from "../../components/H2/H2";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import axios from "axios";
 import { baseUrl, apiKey } from "../../config";
 import LinkButton from "../../components/LinkButton/LinkButton";
@@ -10,7 +11,7 @@ import P from "../../components/P/P";
 import IngredientList from "../../components/IngredientList/IngredientList";
 import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 
-const getIngredientNameAndMeasurementInfo = object => {
+export const getIngredientNameAndMeasurementInfo = object => {
     if(!object.extendedIngredients){
         return [];
     }
@@ -30,8 +31,12 @@ const getIngredientNameAndMeasurementInfo = object => {
 
 const RecipeInfo = () => {
     const {recipeId} = useParams();
-    const [isLoading, setIsLoading] = useState(true);
-    const [recipeInfo, setRecipeInfo] = useState({});
+    const [requestedRecipeInfo, setRequestedRecipeInfo] = useState({
+        isLoading : true,
+        recipeInfo : {},
+        errorMessage : null
+    });
+    const {isLoading, recipeInfo, errorMessage} = requestedRecipeInfo
     const [isMetric, setIsMetric] = useState(false);
     const ingredientsInfo = useMemo(() => getIngredientNameAndMeasurementInfo(recipeInfo), [recipeInfo]); 
 
@@ -39,19 +44,33 @@ const RecipeInfo = () => {
         if(isLoading){
             axios.get(`${baseUrl}/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`)
                 .then(({data}) => {
-                    setRecipeInfo(data);
-                    setIsLoading(false);
+                    const timer = setTimeout(() => setRequestedRecipeInfo({
+                        ...requestedRecipeInfo,
+                        isLoading : false,
+                        recipeInfo : data,
+                    }), 1500);
+
+                    return () => clearTimeout(timer);
                 })
                 .catch(err => console.log(err));
         }
-    }, [recipeId, isLoading]);
+    }, [recipeId, isLoading, requestedRecipeInfo]);
 
     const toggleSwitchOnClickHandler = event => {
         setIsMetric(bool => !bool);
     };
 
     if(isLoading){
-        return <div data-testid="loadingSpinner">Loading</div>;
+        return <LoadingSpinner isLoading={isLoading}/>;
+    }
+
+    if(errorMessage){
+        return (
+            <>
+                <H1 data-testid="recipeInfoPageHeader">{errorMessage}</H1>
+                <LinkButton to="/">Home</LinkButton>
+            </>
+        );
     }
 
     const {title, instructions, readyInMinutes} = recipeInfo;

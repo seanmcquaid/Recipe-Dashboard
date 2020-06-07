@@ -1,5 +1,5 @@
 import React from "react";
-import RecipeInfo from "./RecipeInfo";
+import RecipeInfo, {getIngredientNameAndMeasurementInfo} from "./RecipeInfo";
 import {MemoryRouter, Route} from "react-router-dom";
 import {render, fireEvent, waitForElementToBeRemoved} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
@@ -37,3 +37,45 @@ describe("<RecipeInfo/>" , () => {
     });
 
 });
+
+describe("getIngredientNameAndMeasurementInfo", () => {
+    test("getIngredientNameAndMeasurementInfo works correctly", () => {
+        const object = {
+          extendedIngredients : [
+            {
+              id : 1,
+              name : "Ingredient Name",
+              measures : {
+                metric : {
+                  amount : 200,
+                  unitLong : "Grams"
+                },
+                us : {
+                  amount : 200,
+                  unitLong : "Cups"
+                },
+              },
+            }
+          ]
+        };
+        const result = getIngredientNameAndMeasurementInfo(object);
+
+        const expectedResult = [
+          {
+            id : 1,
+            name : "Ingredient Name",
+            metricMeasurement : "200 Grams",
+            usMeasurement : "200 Cups",
+          }
+        ]
+
+        expect(result).toEqual(expectedResult);
+    });
+
+    test("getIngredientNameAndMeasurementInfo will return an empty array if provided an invalid object", () => {
+        const object = {};
+        const result = getIngredientNameAndMeasurementInfo(object);
+
+        expect(result.length).toBe(0);
+    });
+})
