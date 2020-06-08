@@ -107,6 +107,7 @@ const RecipeInfo = () => {
 const Header = styled.header`
     text-align : center;
     width : 100%;
+    max-width : 800px;
 `;
 
 const MainContent = styled.main`
